@@ -127,8 +127,8 @@ class CollectCommand extends Command
     }
 
     public function createDatabase(OutputInterface  $output): int {
-        $command = $this->getApplication()->find('doctrine:schema:create');
-        $greetInput = new ArrayInput(['--quiet'  => true]);
+        $command = $this->getApplication()->find('doctrine:schema:update');
+        $greetInput = new ArrayInput(['--quiet'  => true, '--force' => true]);
         return $command->run($greetInput, $output);
     }
 }

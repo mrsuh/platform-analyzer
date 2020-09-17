@@ -42,7 +42,9 @@ class AnalyzeCommand extends Command
             ->addOption('section', null, InputOption::VALUE_REQUIRED, 'dev', 'dev')
             ->addOption('sort', null, InputOption::VALUE_REQUIRED, implode(', ', self::sortValues), 'rating')
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, '', -1)
-            ->addOption('format', null, InputOption::VALUE_REQUIRED, implode(', ', self::formats), 'cli');
+            ->addOption('format', null, InputOption::VALUE_REQUIRED, implode(', ', self::formats), 'cli')
+            ->addOption('short', null, InputOption::VALUE_REQUIRED, '0, 1', 0)
+            ->addOption('fromDate', null, InputOption::VALUE_REQUIRED, '2020-01-01');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -82,6 +84,19 @@ class AnalyzeCommand extends Command
             return Command::FAILURE;
         }
 
+        $short = (bool)$input->getOption('short');
+
+        $fromDate = null;
+        if(!empty($input->getOption('fromDate'))) {
+            $fromDate = \DateTimeImmutable::createFromFormat('Y-m-d', $input->getOption('fromDate'));
+
+            if(!$fromDate) {
+                $io->error('Invalid option "fromDate" value. Valid format: 2020-01-01');
+
+                return Command::FAILURE;
+            }
+        }
+
         $qb = $this->articleRepository->createQueryBuilder('a');
 
         $qb->andWhere('a.platform = :platform');
@@ -98,20 +113,46 @@ class AnalyzeCommand extends Command
             $qb->setMaxResults($limit);
         }
 
-        $rows = [
-            [
-                'id',
-                'date',
-                'url',
+        if($fromDate !== null) {
+            $qb->andWhere('a.createdAt >= :date');
+            $qb->setParameter('date', $fromDate->format('Y-m-d'));
+        }
+
+        $headers = [
+            'id',
+            'date',
+            'url',
+            'title',
+            'commentsCount',
+            'favoritesCount',
+            'hits',
+            'rating'
+        ];
+
+        if ($short) {
+            $headers = [
                 'title',
                 'commentsCount',
                 'favoritesCount',
                 'hits',
                 'rating'
-            ]
-        ];
+            ];
+        }
+
+        $rows = [$headers];
 
         foreach ($qb->getQuery()->getResult() as $article) {
+            if ($short) {
+                $rows[] = [
+                    $article->getTitle(),
+                    $article->getCommentsCount(),
+                    $article->getFavoritesCount(),
+                    $article->getHits(),
+                    $article->getRating()
+                ];
+                continue;
+            }
+
             $rows[] = [
                 $article->getId(),
                 $article->getCreatedAt()->setTimezone(new \DateTimeZone('Europe/Moscow'))->format('Y-m-d H:i:s'),
@@ -167,10 +208,3 @@ class AnalyzeCommand extends Command
         $table->render();
     }
 }
-
-
-
-
-
-
-

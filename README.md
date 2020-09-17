@@ -41,13 +41,13 @@ Options:
       --sort=SORT          date, rating, hits, commentsCount, favoritesCount [default: "rating"]
       --limit=LIMIT         [default: -1]
       --format=FORMAT      cli, csv, md [default: "cli"]
-
+      --short=SHORT        0, 1 [default: 0]
+      --fromDate=FROMDATE  2020-01-01
 ```
 
 ```bash
-php bin/console analyze --platform=vc --section=dev --format=cli --limit=10 --sort=rating
+php bin/console analyze --platform=vc --section=dev --format=cli --limit=10 --fromDate=2020-09-01 --sort=rating
 ```
-
 
 ## Docker
 
