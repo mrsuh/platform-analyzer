@@ -34,7 +34,7 @@ class AnalyzeCommand extends Command
         parent::__construct();
     }
 
-    protected function configure(): void
+    protected function configure()
     {
         $this
             ->setDescription('Show formatted info')
@@ -47,7 +47,7 @@ class AnalyzeCommand extends Command
             ->addOption('fromDate', null, InputOption::VALUE_REQUIRED, '2020-01-01');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -180,7 +180,7 @@ class AnalyzeCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function renderCsv(array $rows): void
+    private function renderCsv($rows): void
     {
         $stdout = STDOUT;
         foreach ($rows as $row) {
@@ -189,7 +189,7 @@ class AnalyzeCommand extends Command
         fclose($stdout);
     }
 
-    private function renderMd(array $rows): void
+    private function renderMd($rows): void
     {
         $tableBuilder = new Builder();
 
