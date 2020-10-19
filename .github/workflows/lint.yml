@@ -8,5 +8,5 @@ jobs:
       - name: PHP CS Differ
         uses: docker://mrsuh/actions-php-cs-differ
         with:
-          directory: 'src/'
+          agrs: 'src/'
           
