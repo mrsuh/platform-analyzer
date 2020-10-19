@@ -9,13 +9,5 @@ jobs:
       - name: PHP CS Differ
         uses: mrsuh/actions-php-cs-differ@master
         with:
-          directory: 'src/'
-      
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
-
-      - name: PHPStan
-        uses: chindit/actions-phpstan@master
-        with:
-          arguments: 'src/ --level=7'     
+          directory: 'src/'  
           
