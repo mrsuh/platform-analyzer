@@ -9,4 +9,8 @@ jobs:
         uses: mrsuh/actions-php-cs-differ@master
         with:
           directory: 'src/'
+      - name: PHPStan
+        uses: chindit/actions-phpstan@master
+        with:
+          arguments: 'src/ --level=7'     
           
