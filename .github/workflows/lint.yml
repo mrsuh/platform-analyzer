@@ -1,4 +1,4 @@
-name: Main
+name: Lint
 on: [push, pull_request]
 jobs:
   php-cs-differ:
@@ -9,3 +9,4 @@ jobs:
         uses: mrsuh/actions-php-cs-differ@master
         with:
           directory: 'src/'
+          
