@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: PHP CS Differ
-        uses: mrsuh/actions-php-cs-differ
+        uses: mrsuh/actions-php-cs-differ@master
         with:
           directory: 'src/'
           
