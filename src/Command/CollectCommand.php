@@ -101,6 +101,28 @@ class CollectCommand extends Command
 
             $id = (int)$item['id'];
 
+            $need = false;
+            foreach($item['blocks'] as $block) {
+                if(!isset($block['data'])) {
+                    continue;
+                }
+                if(!isset($block['data']['text'])) {
+                    continue;
+                }
+                $text = $block['data']['text'];
+                file_put_contents('/Users/newuser/web/home/platform-analyzer/var/file.txt', $text . PHP_EOL, FILE_APPEND);
+                if(strpos($text, '#selectel\_инструкция') !== false) {
+                    $need = true;
+                    break;
+                }
+            }
+
+            if(!$need) {
+                continue;
+            }
+
+            file_put_contents('/Users/newuser/web/home/platform-analyzer/var/list/' . $id . '.json', json_encode($item, JSON_PRETTY_PRINT));
+
             $article = $this->articleRepository->findOneBy(['id' => $id]);
 
             if (!$article) {
