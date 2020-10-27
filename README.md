@@ -3,7 +3,7 @@
 
 # Build
 ```bash
-sh bin/build
+sh bin/build.sh
 ```
 
 ## CLI
