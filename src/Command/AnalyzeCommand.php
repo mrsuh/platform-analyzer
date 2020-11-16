@@ -47,7 +47,7 @@ class AnalyzeCommand extends Command
             ->addOption('fromDate', null, InputOption::VALUE_REQUIRED, '2020-01-01');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(object $input, object $output)
     {
         $io = new SymfonyStyle($input, $output);
 
